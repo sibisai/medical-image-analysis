@@ -1,0 +1,25 @@
+{
+  "class_names": [
+    "glioma",
+    "meningioma",
+    "notumor",
+    "pituitary"
+  ],
+  "num_classes": 4,
+  "image_size": 224,
+  "model_architecture": "efficientnet_v2_s",
+  "normalization": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "test_accuracy": 98.8558352402746,
+  "training_epochs": 15
+}
