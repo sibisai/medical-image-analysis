@@ -11,8 +11,7 @@ from typing import Optional, Dict, Any
 import base64
 import os
 
-from app.models import BrainTumorClassifier
-
+from app.models import BrainTumorClassifier, PneumoniaClassifier
 
 # ============================================================================
 # Model Registry - Add new models here
@@ -26,7 +25,7 @@ def load_models():
     
     # Brain Tumor Model
     brain_tumor_weights = os.path.join(weights_dir, "brain_tumor_model.pth")
-    brain_tumor_config = os.path.join(weights_dir, "model_config.json")
+    brain_tumor_config = os.path.join(weights_dir, "brain_tumor_config.json")
     
     if os.path.exists(brain_tumor_weights) and os.path.exists(brain_tumor_config):
         try:
@@ -39,21 +38,20 @@ def load_models():
     else:
         print(f"✗ Brain tumor model files not found in {weights_dir}")
     
-    # -------------------------------------------------------------------------
-    # Add future models here:
-    # -------------------------------------------------------------------------
-    # 
-    # # Pneumonia Model (example)
-    # pneumonia_weights = os.path.join(weights_dir, "pneumonia_model.pth")
-    # pneumonia_config = os.path.join(weights_dir, "pneumonia_config.json")
-    # 
-    # if os.path.exists(pneumonia_weights):
-    #     classifier = PneumoniaClassifier()
-    #     classifier.load_model(pneumonia_weights, pneumonia_config)
-    #     MODELS["pneumonia"] = classifier
-    #
-    # -------------------------------------------------------------------------
+    # Pneumonia Model
+    pneumonia_weights = os.path.join(weights_dir, "pneumonia_model.pth")
+    pneumonia_config = os.path.join(weights_dir, "pneumonia_config.json")
 
+    if os.path.exists(pneumonia_weights) and os.path.exists(pneumonia_config):
+        try:
+            classifier = PneumoniaClassifier()
+            classifier.load_model(pneumonia_weights, pneumonia_config)
+            MODELS["pneumonia"] = classifier
+            print("✓ Pneumonia model loaded")
+        except Exception as e:
+            print(f"✗ Failed to load pneumonia model: {e}")
+    else:
+        print(f"✗ Pneumonia model files not found in {weights_dir}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

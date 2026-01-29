@@ -1,6 +1,6 @@
 # Medical Image Analysis
 
-A medical image classification platform with deep learning models and Grad-CAM visualization support. Currently supports brain tumor MRI classification with plans to expand to other medical imaging tasks.
+A medical image classification platform with deep learning models and Grad-CAM visualization support. Built with PyTorch and FastAPI.
 
 ## Overview
 
@@ -8,13 +8,54 @@ This project provides:
 - REST API for medical image classification
 - Grad-CAM visualizations for model interpretability
 - Extensible architecture for adding new classification models
-- Web frontend for uploading and analyzing images
+- Web frontend for uploading and analyzing images (coming soon)
 
-## Current Models
+## Models
 
-| Model | Task | Classes | Test Accuracy |
-|-------|------|---------|---------------|
-| `brain_tumor` | MRI Classification | glioma, meningioma, pituitary, notumor | 99% |
+| Model | Task | Classes | Test Accuracy | AUC |
+|-------|------|---------|---------------|-----|
+| `brain_tumor` | MRI Classification | glioma, meningioma, pituitary, notumor | 99% | - |
+| `pneumonia` | Chest X-Ray Classification | NORMAL, PNEUMONIA | 88% | 0.958 |
+
+## Results
+
+### Brain Tumor MRI Classification
+
+4-class classification achieving 99% test accuracy.
+
+**Training Progress**
+
+![Brain Tumor Training](assets/brain_tumor_training.png)
+
+**Confusion Matrix**
+
+![Brain Tumor Confusion Matrix](assets/brain_tumor_confusion_matrix.png)
+
+**Grad-CAM Visualizations**
+
+The model correctly identifies tumor regions across all classes:
+
+![Brain Tumor Grad-CAM](assets/brain_tumor_gradcam.png)
+
+### Pneumonia Detection
+
+Binary classification from chest X-rays with 88% accuracy and 0.958 AUC.
+
+**Training Progress**
+
+![Pneumonia Training](assets/pneumonia_training.png)
+
+**Confusion Matrix**
+
+![Pneumonia Confusion Matrix](assets/pneumonia_confusion_matrix.png)
+
+**ROC Curve**
+
+![Pneumonia ROC Curve](assets/pneumonia_roc_curve.png)
+
+**Grad-CAM Visualizations**
+
+![Pneumonia Grad-CAM](assets/pneumonia_gradcam.png)
 
 ## Project Structure
 
@@ -25,7 +66,8 @@ medical-image-analysis/
 │   │   ├── main.py             # FastAPI application
 │   │   ├── models/
 │   │   │   ├── base.py         # Base classifier interface
-│   │   │   └── brain_tumor.py  # Brain tumor classifier
+│   │   │   ├── brain_tumor.py  # Brain tumor classifier
+│   │   │   └── pneumonia.py    # Pneumonia classifier
 │   │   └── utils/
 │   │       └── gradcam.py      # Grad-CAM visualization
 │   ├── weights/                # Model weights (not tracked in git)
@@ -33,8 +75,10 @@ medical-image-analysis/
 │   ├── fly.toml
 │   └── requirements.txt
 ├── frontend/                   # React frontend (coming soon)
-└── notebooks/
-    └── brain_tumor_classifier.ipynb
+├── notebooks/
+│   ├── brain_tumor_classifier.ipynb
+│   └── pneumonia_classifier.ipynb
+└── assets/                     # README images
 ```
 
 ## Deployment
@@ -57,15 +101,18 @@ vercel
 
 ## Training
 
-The training notebook is provided in `notebooks/brain_tumor_classifier.ipynb`:
+Training notebooks are in `notebooks/`. To train a model:
 
-1. Open in Google Colab
+1. Open notebook in Google Colab
 2. Enable GPU runtime (Runtime > Change runtime type > GPU)
 3. Run all cells
-4. Download `brain_tumor_deployment.zip`
+4. Download the deployment zip
 5. Extract weights to `api/weights/`
 
-Dataset: [Brain Tumor MRI Dataset](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset)
+### Datasets
+
+- Brain Tumor: [Brain Tumor MRI Dataset](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset)
+- Pneumonia: [Chest X-Ray Pneumonia](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia)
 
 ## Adding New Models
 
@@ -75,12 +122,9 @@ Dataset: [Brain Tumor MRI Dataset](https://www.kaggle.com/datasets/masoudnickpar
 
 ## Roadmap
 
-### In Progress
-- [ ] Pneumonia detection from chest X-rays
-- [ ] Frontend web application
-
 ### Planned
-- [ ] Additional tumor classification models
+- [ ] Frontend web application
+- [ ] Additional classification models
 - [ ] Batch prediction endpoint
 - [ ] Model versioning
 - [ ] Authentication and rate limiting
@@ -89,10 +133,10 @@ Dataset: [Brain Tumor MRI Dataset](https://www.kaggle.com/datasets/masoudnickpar
 
 ### Model Architecture
 
-EfficientNet-V2-S pretrained on ImageNet with custom classification head:
+Both models use EfficientNet-V2-S pretrained on ImageNet with custom classification heads:
 - Input: 224x224 RGB images
 - Backbone: EfficientNet-V2-S (frozen early layers)
-- Classifier: Dropout(0.3) → Linear(1280, 512) → ReLU → Dropout(0.15) → Linear(512, 4)
+- Classifier: Dropout(0.3) → Linear(1280, 512) → ReLU → Dropout(0.15) → Linear(512, num_classes)
 
 ### Grad-CAM
 
@@ -153,7 +197,7 @@ source venv/bin/activate
 pip install fastapi "uvicorn[standard]" python-multipart pillow opencv-python-headless numpy
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
-# Add weights to weights/ (brain_tumor_model.pth, model_config.json)
+# Add weights to weights/
 
 python -m uvicorn app.main:app --reload --port 8000
 ```
@@ -175,5 +219,6 @@ MIT
 ## Acknowledgments
 
 - [Brain Tumor MRI Dataset](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset) by Masoud Nickparvar
+- [Chest X-Ray Pneumonia Dataset](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia) by Paul Mooney
 - [EfficientNet-V2](https://arxiv.org/abs/2104.00298) by Google Research
 - [Grad-CAM](https://arxiv.org/abs/1610.02391) by Selvaraju et al.
