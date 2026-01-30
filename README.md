@@ -1,4 +1,4 @@
-# Medical Image Analysis
+# Medical Image Classifier
 
 A medical image classification platform with deep learning models and Grad-CAM visualization support. Built with PyTorch, FastAPI, and React.
 
