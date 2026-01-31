@@ -1,0 +1,25 @@
+{
+  "model_name": "bone_fracture",
+  "architecture": "efficientnet_v2_s",
+  "num_classes": 2,
+  "class_names": [
+    "fractured",
+    "not fractured"
+  ],
+  "input_size": 224,
+  "normalize": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "test_accuracy": 0.9822134387351779,
+  "best_val_accuracy": 0.9843184559710495,
+  "auc_score": 0.9983224633136837
+}

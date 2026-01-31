@@ -1,0 +1,26 @@
+{
+  "model_name": "retinal_oct",
+  "architecture": "efficientnet_v2_s",
+  "num_classes": 4,
+  "class_names": [
+    "CNV",
+    "DME",
+    "DRUSEN",
+    "NORMAL"
+  ],
+  "input_size": 224,
+  "normalize": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "test_accuracy": 0.993801652892562,
+  "best_val_accuracy": 0.96875
+}
