@@ -116,7 +116,7 @@ Binary classification of X-rays across all anatomical regions.
 </details>
 
 <details>
-<summary><strong>👁️ Retinal OCT Analysis</strong> (TBD)</summary>
+<summary><strong>👁️ Retinal OCT Analysis</strong> (99% accuracy)</summary>
 
 ### Retinal OCT Analysis
 
