@@ -11,7 +11,7 @@ from typing import Optional, Dict, Any
 import base64
 import os
 
-from app.models import BrainTumorClassifier, PneumoniaClassifier
+from app.models import BrainTumorClassifier, PneumoniaClassifier, BoneFractureClassifier, RetinalOCTClassifier
 
 # ============================================================================
 # Model Registry - Add new models here
@@ -52,6 +52,36 @@ def load_models():
             print(f"✗ Failed to load pneumonia model: {e}")
     else:
         print(f"✗ Pneumonia model files not found in {weights_dir}")
+
+    # Bone fracture Model
+    bone_fracture_weights = os.path.join(weights_dir, "bone_fracture_model.pth")
+    bone_fracture_config = os.path.join(weights_dir, "bone_fracture_config.json")
+
+    if os.path.exists(bone_fracture_weights) and os.path.exists(bone_fracture_config):
+        try:
+            classifier = BoneFractureClassifier()
+            classifier.load_model(bone_fracture_weights, bone_fracture_config)
+            MODELS["bone_fracture"] = classifier
+            print("✓ Bone fracture model loaded")
+        except Exception as e:
+            print(f"✗ Failed to load bone fracture model: {e}")
+    else:
+        print(f"✗ Bone fracture model files not found in {weights_dir}")
+
+    # Retinal OCT Model
+    retinal_oct_weights = os.path.join(weights_dir, "retinal_oct_model.pth")
+    retinal_oct_config = os.path.join(weights_dir, "retinal_oct_config.json")
+
+    if os.path.exists(retinal_oct_weights) and os.path.exists(retinal_oct_config):
+        try:
+            classifier = RetinalOCTClassifier()
+            classifier.load_model(retinal_oct_weights, retinal_oct_config)
+            MODELS["retinal_oct"] = classifier
+            print("✓ Retinal OCT model loaded")
+        except Exception as e:
+            print(f"✗ Failed to load retinal OCT model: {e}")
+    else:
+        print(f"✗ Retinal OCT model files not found in {weights_dir}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
