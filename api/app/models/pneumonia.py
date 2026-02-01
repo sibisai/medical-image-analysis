@@ -81,7 +81,7 @@ class PneumoniaClassifier(BaseClassifier):
             std=self.std
         )
 
-        print(f"Pneumonia model loaded on {self.device}")
+        print(f"✓ Pneumonia model loaded on {self.device}")
 
     def preprocess(self, image: Image.Image) -> torch.Tensor:
         """Preprocess PIL Image for model input."""
